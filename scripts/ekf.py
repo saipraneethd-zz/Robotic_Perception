@@ -34,7 +34,7 @@ class EKF:
         x  = np.cos(alpha)
         y = np.sin(alpha)
         self.circle = np.array([x,y])
-    def predict(self, A, B, U, P):
+    def predict(self, A, B, U):
         """Prediction for Kalman filter assuming variable time step
         A, B will depend on time
         """

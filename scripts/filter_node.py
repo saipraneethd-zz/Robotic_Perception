@@ -1,12 +1,12 @@
+#!/usr/bin/env python
 import rospy
-import numpy as np
-from ekf import EKF
-from scipy import random
+from filter import Filter
 
-A = random.rand(2, 2)
-A = np.dot(A, A.transpose())
+def main():
 
-X = np.zeros(2)
+    rospy.init_node('filter_node')
+    filt = Filter()
+    rospy.spin()
 
-ekf = EKF(X, 0, 0)
-ekf.plot_cov(X, A)
+if __name__ == "__main__":
+    main()

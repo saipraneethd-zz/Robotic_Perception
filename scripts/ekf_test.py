@@ -39,7 +39,7 @@ A = np.array([[1, 0, dt, 0],\
               [0, 0, 0, 1]])
 #test to check if prediction is working. error ellipses should grow with time
 for i in range(0,10):
-    ekf.predict(A, np.array([0]), np.array([0]), P)
+    ekf.predict(A, np.array([0]), np.array([0]))
     ekf.plot_cov(ekf.X, ekf.P, label)
 plt.title("Prediction step test, error grows with time if there is no measurement update")
 
