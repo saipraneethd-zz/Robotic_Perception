@@ -4,7 +4,7 @@ from filter import Filter
 
 def main():
 
-    rospy.init_node('filter_node')
+    rospy.init_node('filter_node', log_level = rospy.DEBUG)
     filt = Filter()
     rospy.spin()
 

@@ -25,51 +25,56 @@ class Filter:
         odom2_topic = rospy.get_param('odom2_topic', "/odom2")
 
         self.Q = np.diag(Q)
-        self.P_init = np.array(P_init)
+        self.P_init = np.diag(P_init)
         self.R1 = np.diag(R1)
         self.R2 = np.diag(R2)
         self.X_init = np.array(X_init)
         self.r = rospy.Rate(feq)
 
-        A = np.identity(self.state_dim)
-        H = np.identity(self.state_dim)
-        B = np.zeros(1)
-        U = np.zeros(1)
+        self.A = np.identity(self.state_dim)
+        self.H = np.identity(self.state_dim)
+        self.B = np.zeros(1)
+        self.U = np.zeros(1)
 
         self.mutex = Lock()
         self.last_update_time = None
 
         self.filt = EKF(self.X_init, self.Q, self.P_init)
 
-        odom_pub = rospy.Publisher(out_odom_topic, Odometry, queue_size=10)
+        self.odom_pub = rospy.Publisher(out_odom_topic, Odometry, queue_size=10)
         rospy.Subscriber(odom1_topic, Odometry, self.odom1_callback)
         rospy.Subscriber(odom2_topic, Odometry, self.odom2_callback)
 
     def odom1_callback(self, data):
         self.mutex.acquire()
-        self.odom_update(data, self.R1)
+        self.odom_update(data, self.R1, "odom1")
         self.mutex.release()
 
     def odom2_callback(self,data):
         self.mutex.acquire()
-        self.odom_update(data, self.R2)
+        self.odom_update(data, self.R2, "odom2")
         self.mutex.release()
 
-    def odom_update(self, data, R):
+    def odom_update(self, data, R, source):
         if self.last_update_time is None:
             self.last_update_time = rospy.Time.now()
         current_time = rospy.Time.now()
         #delt = current_time - self.last_update_time
-        delt = data.header.stamp - self.last_update_time
+        delt = (data.header.stamp - self.last_update_time).to_sec()
         #self.last_update_time = rospy.Time.now()
-        self.last_update_time = data.header.stamp()
         self.A[0][2] = delt
         self.A[1][3] = delt
-        if delt < 0:
-            pass
+        if delt < .05:
+            return
+        self.last_update_time = data.header.stamp
+        rospy.logdebug("\nreceived %s , time elapsed since last update %s\n",source,  delt)
+        rospy.logdebug("\nbefore %s prediction\n state = \n%s\ncov = \n%s\n", source, self.filt.X, self.filt.P)
         self.filt.predict(self.A, self.B, self.U)
+        rospy.logdebug("\nafter prediction\nstate = \n%s\ncov = \n%s\n",self.filt.X, self.filt.P)
         Z = self.get_z_from_odom(data)
         self.filt.update(Z, self.H, R)
+        rospy.logdebug("\ngot %s measurement\nstate = \n%s\n cov = \n%s\n", source, Z,R)
+        rospy.logdebug("\nafter %s update\nstate = \n%s\ncov = \n%s\n\n\n\n", source, self.filt.X, self.filt.P)
         self.publish_odom_from_z(Z)
 
     def get_z_from_odom(self, data):
