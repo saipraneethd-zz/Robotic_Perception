@@ -32,9 +32,12 @@
 - In addition to this the ekf node will also print debugging messages on stdout
 ## Subscription:
 The node launched above subscibes to follwoing topics:
+
 /unity_ros/husky/TrueState/odom  --->  first odometry topic
+
 /odom2  ---> 2nd odometry topic (not tested yet)
 
 ## Publication
 The node launched above publishes output odometry on following topic:
+
 /odom_filtered
