@@ -10,7 +10,7 @@ project(Robotic_Perception)
 find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   rospy
-  std_mgs
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
