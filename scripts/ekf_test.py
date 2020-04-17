@@ -1,4 +1,3 @@
-import rospy
 import numpy as np
 from ekf import EKF
 from scipy import random
