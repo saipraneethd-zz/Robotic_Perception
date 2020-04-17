@@ -10,11 +10,11 @@
     rosparam set use_sim_time true
     ```
 
-- In a new terminal Run the bag file (only tested with one odometry as of now)
+- In a new terminal run the bag file (only tested with one odometry as of now)
     ```sh
     rosbag play data/2020-04-17-03-55-13.bag --clock
     ```
-- In a new terminal Start ekf:
+- In a new terminal start ekf:
     ```sh
     roslaunch Robot_Perception ekf_node.launch
     ```
