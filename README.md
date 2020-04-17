@@ -31,7 +31,7 @@
  
 - In addition to this the ekf node will also print debugging messages on stdout
 ## Subscription:
-The node launched above subscibes to follwoing topics:
+The node launched above subscribes to follwoing topics:
 
 /unity_ros/husky/TrueState/odom  --->  first odometry topic
 
