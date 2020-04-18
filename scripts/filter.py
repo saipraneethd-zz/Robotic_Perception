@@ -75,7 +75,7 @@ class Filter:
         self.filt.update(Z, self.H, R)
         rospy.logdebug("\ngot %s measurement\nstate = \n%s\n cov = \n%s\n", source, Z,R)
         rospy.logdebug("\nafter %s update\nstate = \n%s\ncov = \n%s\n\n\n\n", source, self.filt.X, self.filt.P)
-        self.publish_odom_from_z(Z)
+        self.publish_odom_from_z(self.filt.X)
 
     def get_z_from_odom(self, data):
         x = data.pose.pose.position.x
