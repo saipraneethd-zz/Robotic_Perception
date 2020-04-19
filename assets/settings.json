@@ -1,0 +1,42 @@
+{
+  "ClockSpeed": 1,
+  "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
+  "SettingsVersion": 1.2,
+  "CameraDefaults": {
+    "CaptureSettings": [
+        {
+          "ImageType": 0,
+          "Width": 640,
+          "Height": 480,
+          "FOV_Degrees": 90,
+          "AutoExposureSpeed": 100,
+          "MotionBlurAmount": 0
+        }
+    ]
+  },
+  "SimMode": "Car",
+  "ViewMode": "",
+  "Vehicles": {
+    "PhysXCar": {
+          "VehicleType": "PhysXCar",
+          "DefaultVehicleState": "",
+          "AutoCreate": true,
+          "PawnPath": "",
+          "EnableCollisionPassthrogh": false,
+          "EnableCollisions": false,
+          "RC": {
+            "RemoteControlID": -1
+          },
+          "Sensors": {
+              "IMU1" : {
+                "SensorType" : 2,
+                "Enabled" : true
+              },
+              "GPS" :{
+                "SensorType" : 3,
+                "Enabled" : true
+              }
+          }
+    }
+  }
+}
