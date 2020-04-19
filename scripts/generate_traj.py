@@ -4,6 +4,8 @@ import utm
 import sys
 import pandas as pd
 import numpy as np
+import cv2
+import os
 # connect to the AirSim simulator
 client = airsim.CarClient()
 client.confirmConnection()
@@ -13,6 +15,7 @@ gps_init = None
 df_dict = {}
 noisy_dict1 = {}
 noisy_dict2 = {}
+folder = "../data/straight_line/"
 try:
     print("Collecting Trajectory Data")
     while True:
@@ -58,14 +61,18 @@ try:
             "VX":vx+noise2[2],
             "VY":vy+noise2[3]
         }
+        responses = client.simGetImages([airsim.ImageRequest("1", airsim.ImageType.Scene)])
+        filename = folder + 'raw_images/img_{:f}'.format(t)
+        airsim.write_file(os.path.normpath(filename + '.png'), responses[0].image_data_uint8)
         time.sleep(0.1) # rate of collection
+
 except KeyboardInterrupt:
     print('Interrupted')
     print('Storing as CSV')
     gdf = pd.DataFrame.from_dict(df_dict,"index")
     ndf1 = pd.DataFrame.from_dict(noisy_dict1,"index")
     ndf2 = pd.DataFrame.from_dict(noisy_dict2,"index")
-    gdf.to_csv('ground_truth.csv')
-    ndf1.to_csv('gauss_noise1.csv')
-    ndf2.to_csv('gauss_noise2.csv')
+    gdf.to_csv(folder+'ground_truth.csv')
+    ndf1.to_csv(folder+'gauss_noise1.csv')
+    ndf2.to_csv(folder+'gauss_noise2.csv')
     sys.exit(0)
