@@ -1,11 +1,16 @@
 state_dim: 4
 control_dim: 2
 measurement_dim: 4
-process_noise: [0.5, 0.5, 0.5, 0.5]
-R1: [0.1, 0.1, 0.05, 0.05]
-R2: [0.1, 0.1, 0.05, 0.05]
+process_noise: [0.05, 0.05, 0.05, 0.05]
+#R1: [3, 3, 4.0, 4.0]
+#R2: [0.1, 0.1, 0.1, 0.1]
+R1: [0.1, 0.1, 0.1, 0.1]
+#R1: [3, 3, 4.0, 4.0]
+R2: [0.1, 0.1]
 init_covar: [10.0, 10.0, 10.0, 10.0]
 X_init: [0.,0.,0.,0.]
-odom1_topic: "/unity_ros/husky/TrueState/odom"
-odom2_topic: "/odom2"
+odom1_topic: "/tracking_node/global_odometry"
+odom2_topic: "/vins_estimator/odometry"
+odom1_use_val: False
+odom2_use_val: True
 out_odom_topic: "/odom_fitered"
