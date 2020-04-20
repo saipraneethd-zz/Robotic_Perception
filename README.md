@@ -1,10 +1,10 @@
 # MEEN 689 - Robotic Perception
 
-​		This project compares Least-squares estimator(LSQ) and Extended Kalman Filter(EKF) for sensor fusion using Odometry data collected from simulated environment. 
+​		This project compares Least-squares estimator(LSQ) and Extended Kalman Filter(EKF) for sensor fusion using Odometry data collected from simulated environment.
 
 ## Simulation Environment ##
 
-​		This project uses [AirSim](https://github.com/Microsoft/AirSim), an open-source, and cross platform simulation environment for drones, cars and more, built on [Unreal Engine](https://www.unrealengine.com/) (we now also have an experimental [Unity](https://unity3d.com/) release). It supports collecting simulated data from various sensors such as Camera (Including Depth ), LIDAR, GPS, IMU, etc. The vehicles(car/drone) can be controlled manually with keyboard or remote control (RC). Airsim also provides pre-built [Python API](https://airsim-fork.readthedocs.io/en/docs/apis.html) to interact with vehicles such as to retrieve images, get current state of vehicle, and control the vehicle. 
+​		This project uses [AirSim](https://github.com/Microsoft/AirSim), an open-source, and cross platform simulation environment for drones, cars and more, built on [Unreal Engine](https://www.unrealengine.com/) (we now also have an experimental [Unity](https://unity3d.com/) release). It supports collecting simulated data from various sensors such as Camera (Including Depth ), LIDAR, GPS, IMU, etc. The vehicles(car/drone) can be controlled manually with keyboard or remote control (RC). Airsim also provides pre-built [Python API](https://airsim-fork.readthedocs.io/en/docs/apis.html) to interact with vehicles such as to retrieve images, get current state of vehicle, and control the vehicle.
 
 ​		For the  current simulation we used pre-built of [Modular Neighborhood Pack](https://www.unrealengine.com/marketplace/en-US/product/modular-neighborhood-pack), available to download for free at [AirSim Releases - v1.2.2 - Windows](https://github.com/microsoft/AirSim/releases/download/v1.3.0-Windows/Neighborhood.zip). Before launching Airsim, the `setting.json` in `Documents/Airsim/ ` should be replaced with `/assets/settings.json`. Launching `AirSimNH.exe` starts the simulator which looks as follows
 
@@ -12,9 +12,9 @@
 
 ## Data Collection ##
 
-To collect trajectory data run `/scripts/generate_traj.py`, which connects to `CarClient()` and starts 
+To collect trajectory data run `/scripts/generate_traj.py`, which connects to `CarClient()` and starts
 
-recording the GPS and Image data. We collected two runs of data presented in the `data` folder. The first run includes the car following a straight line and the second run includes the car making a loop around the neighborhood. Each run folder consists of `raw_images`, `ground_truth.csv`, `gauss_noise1.csv`, `gauss_noise2.csv` which represent the raw image data files collected during the run, ground truth consisting `[x,y,vx,vy]` and noisy measurements of two GPS sensors with gaussian noise. 
+recording the GPS and Image data. We collected two runs of data presented in the `data` folder. The first run includes the car following a straight line and the second run includes the car making a loop around the neighborhood. Each run folder consists of `raw_images`, `ground_truth.csv`, `gauss_noise1.csv`, `gauss_noise2.csv` which represent the raw image data files collected during the run, ground truth consisting `[x,y,vx,vy]` and noisy measurements of two GPS sensors with gaussian noise.
 
 ```sh
 python generate_traj.py
