@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import math
 
-folder = "../data/loop/"
+folder = "../data/straight_line/"
 file = folder + "ground_truth.csv"
 df = pd.read_csv(file)
 df_dict = {}
@@ -16,8 +16,10 @@ for index, row in df.iterrows():
     if x >= 0.0005 or x<= -0.0005:
         r = math.sqrt(x**2+y**2)
         th = math.atan(y/x)
-        noise1 = np.random.normal(0,1,2)
-        noise2 = np.random.normal(0,0.5,2)
+        noise1 = np.random.normal(0,1,1)
+        noise2 = np.random.normal(0,0.5,1)
+        noise1_t = np.random.normal(0,0.4,1)
+        noise2_t = np.random.normal(0,0.2,1)
         df_dict[t] = {
             "Time":t,
             "r":r,
@@ -26,12 +28,12 @@ for index, row in df.iterrows():
         noisy_dict1[t] = {
             "Time":t,
             "r":r + noise1[0],
-            "theta":th + noise1[1]
+            "theta":th + noise1_t[0]
         }
         noisy_dict2[t] = {
             "Time":t,
             "r":r + noise2[0],
-            "theta":th + noise2[1]
+            "theta":th + noise2_t[0]
         }
         t += 1
 
