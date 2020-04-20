@@ -71,12 +71,16 @@ Ros package to combine odometry coming from two different sensors using Extended
 - In addition to this the ekf node will also print debugging messages on stdout
 ### Subscribers
 The node launched above subscribes to following topics:
-
+   ```sh
 /unity_ros/husky/TrueState/odom  --->  first odometry topic
-
+  ````
+  ```sh
 /odom2  ---> 2nd odometry topic (not tested yet)
 
+   ````
 ### Publishers
 The node launched above publishes output odometry on following topic:
-
+   ```sh
 /odom_filtered
+
+   ````
