@@ -60,6 +60,27 @@ class EKF:
         K = self.P@H_T@S_inv
         self.X = self.X + K@Y
         self.P = (np.identity(self.X.shape[0]) - K@H)@self.P
+    def nl_update(self, Z, H, R, Z_bar):
+        """ Measurement update for Kalman filter
+        different sensors will have different H
+        and different sensor Noise R
+        """
+
+        H_T = H.transpose()
+
+        Y = Z - Z_bar
+        angle = Y[1]
+        Y[1] = (angle + math.pi) % (2 * math.pi) - math.pi
+        S = H@self.P@H_T + R
+
+        #stable inverse calculation
+        L = np.linalg.cholesky(S)
+        L_inv = spla.solve_triangular(L, np.identity(L.shape[0]), lower=True)
+        S_inv = L_inv.transpose() @ L_inv
+
+        K = self.P@H_T@S_inv
+        self.X = self.X + K@Y
+        self.P = (np.identity(self.X.shape[0]) - K@H)@self.P
     def plot_cov(self, X, P, label):
         """Plot the 2d error Ellipse given mean X and Covariance P"""
 
