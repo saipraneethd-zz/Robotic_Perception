@@ -67,9 +67,9 @@ def main():
     R2 = np.identity(4)*0.5
     H = np.identity(4)
     Q = np.diag([0.01, 0.01, 0.01, 0.01])
-    gn1 = pd.read_csv('gauss_noise1.csv', sep = ',')
-    gn2 = pd.read_csv('gauss_noise2.csv', sep = ',')
-    gt = pd.read_csv('ground_truth.csv', sep = ',')
+    gn1 = pd.read_csv('../data/straight_line/gauss_noise1.csv', sep = ',')
+    gn2 = pd.read_csv('../data/straight_line/gauss_noise2.csv', sep = ',')
+    gt = pd.read_csv('../data/straight_line/ground_truth.csv', sep = ',')
     meas1 = gn1.to_numpy()[:, 2:]
     meas2 = gn2.to_numpy()[:, 2:]
     ground_truth = gt.to_numpy()[:, 2:]
