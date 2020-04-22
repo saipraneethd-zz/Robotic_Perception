@@ -34,6 +34,15 @@ Data is available at `/data/loop`
 
 ## LSQ Estimator ##
 
+Linear Least Squares estimator calculates the estimates of the values of position and velocity using the measurements of the two different Sensors
+
+Run the linear least squares by running the least_squares.py file in scripts folder
+
+```sh
+python scripts/least_squares.py
+```
+
+
 ## EKF Estimator ##
 
 Ros package to combine odometry coming from two different sensors using Extended Kalman filter
