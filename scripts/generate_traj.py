@@ -15,7 +15,7 @@ gps_init = None
 df_dict = {}
 noisy_dict1 = {}
 noisy_dict2 = {}
-folder = "../data/straight_line/"
+folder = "../data/loop/"
 try:
     print("Collecting Trajectory Data")
     while True:
@@ -38,8 +38,8 @@ try:
         vx = gps_data.gnss.velocity.x_val
         vy = gps_data.gnss.velocity.y_val
         t = time.time() - start_time
-        noise1 = np.random.normal(0,1,4)
-        noise2 = np.random.normal(0,0.5,4)
+        noise1 = np.random.normal(0,2,4)
+        noise2 = np.random.normal(0,3,4)
         df_dict[t] = {
             "Time":t,
             "X":x-x_o,
