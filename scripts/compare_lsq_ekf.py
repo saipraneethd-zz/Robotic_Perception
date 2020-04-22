@@ -12,7 +12,11 @@ def estimate_x(meas1, meas2, ground_truth, R1, R2, H):
     # for i in range(len(x)):
         # 	print('Estimated x: {}, Ground truth: {}'.format(x[i], ground_truth[i]))
     plot_x(x, ground_truth, "lsq", None)
-    print(f"lsq ---> pose error = {np.linalg.norm(x-ground_truth)}")
+    s1 = 0
+    n_obs = z1.shape[1]
+    for i in range(0,n_obs):
+        s1 = s1 + np.linalg.norm(x[i] - ground_truth[i])
+    print(f"lsq ---> pose error = {s1/n_obs}")
 def plot_x(x, ground_truth, algo, Q):
     plt.figure()
     if Q is not None:
@@ -65,8 +69,13 @@ def ekf_estimate(meas1, meas2, ground_truth, R1, R2, H, Q):
     plot_x(x2, ground_truth, "kf without prediction", None)
     plot_x(meas1, ground_truth, "measurement 1", None)
     plot_x(meas2, ground_truth, "measurement 2", None)
-    print(f"kf with predction ---> Q = diag({Q[0][0]}_0), pose error = {np.linalg.norm(x1-ground_truth)}")
-    print(f"kf without predction ---> pose error = {np.linalg.norm(x2-ground_truth)}")
+    s1 = 0.
+    s2 = 0.
+    for i in range(0,n_obs):
+        s1 = s1 + np.linalg.norm(x1[i] - ground_truth[i])
+        s2 = s2 + np.linalg.norm(x2[i] - ground_truth[i])
+    print(f"kf with predction ---> Q = diag({Q}_0), pose error = {s1/n_obs}")
+    print(f"kf without predction ---> pose error = {s2/n_obs}")
 
 def main():
     win_size = 1

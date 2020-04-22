@@ -84,9 +84,12 @@ def ekf_estimate(meas1, meas2, ground_truth, R1, R2, H, Q):
     #    filt2.update(meas2[i], H, R2)
     #    x2[i] = filt2.X
     #plot_x(x1, ground_truth, f"non linear kf with prediction, Q = 0_01")
+    s1 = 0.
+    for i in range(0,n_obs):
+        s1 = s1 + np.linalg.norm(x1[i] - ground_truth[i])
+    print(f"kf with predction ---> Q = diag({Q}_0), pose error = {s1/n_obs}")
     plot_x(x1, ground_truth, f"non linear kf with prediction, Q = 0_01")
     #plot_x(x2, ground_truth, "non linear kf without prediction")
-    print(f"kf with predction ---> Q = diag({Q[0][0]}_0), pose error = {np.linalg.norm(x1-ground_truth[0:n_obs])}")
     #print(f"kf without predction ---> pose error = {np.linalg.norm(x2-ground_truth)}")
 
 def main():
