@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 def estimate_x(meas1, meas2, ground_truth, R1, R2, H):
 	z1 = meas1.T
 	z2 = meas2.T
-	x = np.linalg.inv(H.T@(np.linalg.inv(R1)+np.linalg.inv(R2))@H)@(H.T@np.linalg.inv(R1)@z1+H.T@np.linalg.inv(R2)@z2)
+	x = (np.linalg.inv(H.T@(np.linalg.inv(R1)+np.linalg.inv(R2))@H)@(H.T@np.linalg.inv(R1)@z1+H.T@np.linalg.inv(R2)@z2)).T
 	# for i in range(len(x)):
 	# 	print('Estimated x: {}, Ground truth: {}'.format(x[i], ground_truth[i]))
 	plt.figure()
