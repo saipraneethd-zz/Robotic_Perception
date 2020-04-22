@@ -21,12 +21,12 @@ for index, row in df.iterrows():
     if x >= 0.0005 or x<= -0.0005:
         r = math.sqrt(x**2+y**2)
         th = np.arctan2(y, x)
-        noise1 = np.random.normal(0,1,1)
-        noise2 = np.random.normal(0,0.5,1)
+        noise1 = np.random.normal(0,0.1,1)
+        noise2 = np.random.normal(0,4,1)
         noise1_vel = np.random.normal(0,0.8,2)
         noise2_vel = np.random.normal(0,0.4,2)
-        noise1_t = np.random.normal(0,0.4,1)
-        noise2_t = np.random.normal(0,0.2,1)
+        noise1_t = np.random.normal(0,0.2,1)
+        noise2_t = np.random.normal(0,0.02,1)
         df_dict[t] = {
             "Time":t,
             "r":r,

@@ -31,6 +31,7 @@ def plot_x(x, ground_truth, algo):
     plt.ylabel("Velocity Y")
     plt.legend()
     plt.savefig(f"{algo} Velocity Comparison")
+    np.savez("nlekf", x)
 def pi_2_pi(angle):
     return (angle + math.pi) % (2 * math.pi) - math.pi
 def get_dh(X, sensX, sensY):
@@ -41,11 +42,11 @@ def get_dh(X, sensX, sensY):
     #print(r)
     r_sq = np.sqrt(r)
     H = np.array([[x/r_sq, y/r_sq, 0., 0.],\
-                  [-y/r, x/r, 0., 0. ],\
-                  [0, 0, 1., 0. ],\
-                  [0, 0, 0., 1. ]])
-    return H, np.array([r_sq, th, X[2], X[3]])
-    #return H, np.array([r_sq, th])
+                  [-y/r, x/r, 0., 0. ]])
+                  #[0, 0, 1., 0. ],\
+                  #[0, 0, 0., 1. ]])
+    #return H, np.array([r_sq, th, X[2], X[3]])
+    return H, np.array([r_sq, th])
 
 def ekf_estimate(meas1, meas2, ground_truth, R1, R2, H, Q):
     delt = 0.1
@@ -66,19 +67,23 @@ def ekf_estimate(meas1, meas2, ground_truth, R1, R2, H, Q):
     filt1 = EKF(X_init, Q, P_init)
     #filt2 = EKF(X_init, Q, P_init)
     x1 = np.zeros([n_obs, 4])
+    x2 = np.zeros([n_obs, 4])
     #x2 = np.zeros([n_obs, 4])
     for i in range(0, n_obs):
         filt1.predict(A, B, U)
         #print(filt1.X)
         H, Z_bar = get_dh(filt1.X, sensX, sensY)
-        filt1.nl_update(meas1[i], H, R1, Z_bar)
+        filt1.nl_update(meas1[i][0:2], H, R1, Z_bar)
         H, Z_bar = get_dh(filt1.X, sensX, sensY)
-        filt1.nl_update(meas2[i], H, R2, Z_bar)
+        filt1.nl_update(meas2[i][0:2], H, R2, Z_bar)
         x1[i] = filt1.X
+        x2[i][0] = meas1[i][0]*math.cos(meas1[i][1])
+        x2[i][1] = meas1[i][0]*math.sin(meas1[i][1])
     #    filt2.X = meas1[i]
     #    filt2.P = R1
     #    filt2.update(meas2[i], H, R2)
     #    x2[i] = filt2.X
+    #plot_x(x1, ground_truth, f"non linear kf with prediction, Q = 0_01")
     plot_x(x1, ground_truth, f"non linear kf with prediction, Q = 0_01")
     #plot_x(x2, ground_truth, "non linear kf without prediction")
     print(f"kf with predction ---> Q = diag({Q[0][0]}_0), pose error = {np.linalg.norm(x1-ground_truth[0:n_obs])}")
@@ -86,18 +91,18 @@ def ekf_estimate(meas1, meas2, ground_truth, R1, R2, H, Q):
 
 def main():
     win_size = 1
-    R1 = np.identity(4)
-    R2 = np.identity(4)
-    R1[0][0] = 1
-    R1[1][1] = 0.16
-    R1[2][2] = 0.64
-    R1[3][3] = 0.64
-    R2[0][0] = 0.25
+    R1 = np.identity(2)
+    R2 = np.identity(2)
+    R1[0][0] = 0.01
+    R1[1][1] = 0.04
+    #R1[2][2] = 0.64
+    #R1[3][3] = 0.64
+    R2[0][0] = 16
     R2[1][1] = 0.04
-    R2[2][2] = 0.16
-    R2[3][3] = 0.16
+   # R2[2][2] = 0.16
+   # R2[3][3] = 0.16
     H = np.identity(4)
-    Q = 10.0*np.diag([1.0, 1.0, 1.0, 1.0])
+    Q = 10*np.diag([1.0, 1.0, 1.0, 1.0])
     folder = '../data/loop/'
     folder = './'
     gn1 = pd.read_csv(folder + 'gauss_noise1_rt.csv', sep = ',')
