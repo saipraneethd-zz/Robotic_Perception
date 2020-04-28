@@ -7,8 +7,7 @@ from ekf import EKF
 def estimate_x(meas1, meas2, ground_truth, R1, R2, H):
     z1 = meas1.T
     z2 = meas2.T
-    x = (0.5*(np.linalg.inv((H.T)@np.linalg.inv(R1)@H)@(H.T)@(np.linalg.inv(R1))@z1)\
-         + 0.5 * (np.linalg.inv((H.T)@np.linalg.inv(R2)@H)@(H.T)@(np.linalg.inv(R2))@z2)).T
+    x = (np.linalg.inv(H.T@(np.linalg.inv(R1)+np.linalg.inv(R2))@H)@(H.T@np.linalg.inv(R1)@z1+H.T@np.linalg.inv(R2)@z2)).T
     # for i in range(len(x)):
         # 	print('Estimated x: {}, Ground truth: {}'.format(x[i], ground_truth[i]))
     plot_x(x, ground_truth, "lsq", None)
@@ -17,7 +16,7 @@ def estimate_x(meas1, meas2, ground_truth, R1, R2, H):
     for i in range(0,n_obs):
         s1 = s1 + np.linalg.norm(x[i] - ground_truth[i])
     print(f"lsq ---> pose error = {s1/n_obs}")
-    
+
 def plot_x(x, ground_truth, algo, Q):
     plt.figure()
     if Q is not None:
@@ -40,7 +39,7 @@ def plot_x(x, ground_truth, algo, Q):
     plt.ylabel("Velocity Y")
     plt.legend()
     plt.savefig(f"{algo} Velocity Comparison")
-    
+
 def ekf_estimate(meas1, meas2, ground_truth, R1, R2, H, Q):
     delt = 0.1
     state_dim = 4
