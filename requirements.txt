@@ -1,6 +1,6 @@
 airsim==1.2.8
 ipykernel==5.1.4
-ipython==7.2.0
+ipython==7.16.3
 jupyter==1.0.0
 matplotlib==3.0.3
 notebook==5.7.8
